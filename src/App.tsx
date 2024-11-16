@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef, useEffect } from "react";
 import Markdown from "react-markdown";
 import { Avatar, AvatarImage } from "./components/ui/avatar";
 import { Button } from "./components/ui/button";
@@ -18,20 +18,36 @@ function App() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [preference, setPreference] = useState<"movie" | "anime" | null>(null);
 
+  // Add refs for scroll management
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to bottom function
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    }
+  };
+
+  // Auto scroll when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const getAvatarSrc = (role: string) => {
     if (role === "user") {
       return "https://github.com/shadcn.png";
     }
 
     if (preference === "anime") {
-      return "https://i.pinimg.com/736x/1f/9c/d0/1f9cd0cab30ee9cf58e19510bef3a55d.jpg"; // Cute anime assistant
+      return "https://i.pinimg.com/736x/1f/9c/d0/1f9cd0cab30ee9cf58e19510bef3a55d.jpg";
     }
 
     if (preference === "movie") {
-      return "https://i.pinimg.com/736x/de/6b/57/de6b57107eee677bc4cd46f67250d892.jpg"; // Movie character (WALL-E)
+      return "https://i.pinimg.com/736x/de/6b/57/de6b57107eee677bc4cd46f67250d892.jpg";
     }
 
-    return "https://github.com/shadcn.png"; // fallback
+    return "https://github.com/shadcn.png";
   };
 
   const getDefaultPrompt = (type: "movie" | "anime") => {
@@ -127,9 +143,7 @@ function App() {
         )}
         {!preference && (
           <>
-            <h1 className="text-2xl text-center text-green-500">
-              What's your mode today 🤩 ?
-            </h1>
+            <h1 className="text-xl text-center">What's your mode today 🤩 ?</h1>
             <div className="flex gap-2 mx-auto w-fit">
               <Badge
                 variant="outline"
@@ -162,33 +176,36 @@ function App() {
               </Button>
             </form>
             <ScrollArea className="h-[300px] rounded-md bg-muted p-4">
-              {messages.length > 0 ? (
-                messages
-                  .filter((msg) => msg.role !== "system")
-                  .map((msg, index) => (
-                    <div key={index} className="mb-2">
-                      <div
-                        className={`text-sm flex gap-2 ${
-                          msg.role === "user"
-                            ? "text-background bg-secondary-foreground font-semibold rounded-md w-fit ml-auto p-3"
-                            : "text-muted-foreground"
-                        }`}
-                      >
-                        <Avatar className="w-7 h-7">
-                          <AvatarImage
-                            src={getAvatarSrc(msg.role)}
-                            alt={msg.role}
-                          />
-                        </Avatar>
-                        <Markdown className={"mt-1"}>{msg.content}</Markdown>
+              <div ref={scrollAreaRef} className="h-full overflow-y-auto">
+                {messages.length > 0 ? (
+                  messages
+                    .filter((msg) => msg.role !== "system")
+                    .map((msg, index) => (
+                      <div key={index} className="mb-2">
+                        <div
+                          className={`text-sm flex gap-2 ${
+                            msg.role === "user"
+                              ? "text-background bg-secondary-foreground font-semibold rounded-md w-fit ml-auto p-3"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          <Avatar className="w-7 h-7">
+                            <AvatarImage
+                              src={getAvatarSrc(msg.role)}
+                              alt={msg.role}
+                            />
+                          </Avatar>
+                          <Markdown className="mt-1">{msg.content}</Markdown>
+                        </div>
                       </div>
-                    </div>
-                  ))
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No response yet...
-                </p>
-              )}
+                    ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    No response yet...
+                  </p>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
             </ScrollArea>
           </>
         )}
