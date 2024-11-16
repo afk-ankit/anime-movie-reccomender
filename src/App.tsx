@@ -146,15 +146,15 @@ function App() {
             <h1 className="text-xl text-center">What's your mode today 🤩 ?</h1>
             <div className="flex gap-2 mx-auto w-fit">
               <Badge
-                variant="outline"
-                className="cursor-pointer text-lg"
+                variant={"outline"}
+                className="cursor-pointer text-[16px]"
                 onClick={() => handlePreferenceSelect("anime")}
               >
                 Anime
               </Badge>
               <Badge
-                variant="outline"
-                className="cursor-pointer text-lg"
+                variant={"outline"}
+                className="cursor-pointer text-[16px]"
                 onClick={() => handlePreferenceSelect("movie")}
               >
                 Movie
