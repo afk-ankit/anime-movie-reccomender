@@ -13,7 +13,7 @@ type Message = {
 };
 
 function App() {
-  const [prompt, setPrompt] = useState("");
+  let prompt = "";
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [preference, setPreference] = useState<"movie" | "anime" | null>(null);
@@ -82,7 +82,7 @@ function App() {
       { role: "user", content: prompt },
     ];
     setMessages(newMessages);
-    setPrompt("");
+    prompt="";
 
     setMessages((messages) => [
       ...messages,
@@ -103,7 +103,7 @@ function App() {
         streamedContent += content;
 
         setMessages((prevMessages) => {
-          const newMessages = [...prevMessages];
+          const newMessages =prevMessages;
           newMessages[newMessages.length - 1].content = streamedContent;
           return newMessages;
         });
@@ -168,7 +168,7 @@ function App() {
               <Input
                 placeholder={`Ask anything about ${preference}s`}
                 value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+                onChange={(e) => {prompt=e.target.value}}
                 disabled={isStreaming}
               />
               <Button type="submit" disabled={!prompt || isStreaming}>
