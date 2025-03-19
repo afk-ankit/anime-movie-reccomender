@@ -206,6 +206,7 @@ function App() {
                 )}
                 <div ref={messagesEndRef} />
               </div>
+              <h1>{lahe}</h1>
             </ScrollArea>
           </>
         )}
