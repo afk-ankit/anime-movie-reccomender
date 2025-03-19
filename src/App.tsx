@@ -12,6 +12,14 @@ type Message = {
   content: string;
 };
 
+/**
+ * Renders the chat interface for interacting with an AI assistant specialized in movie or anime queries.
+ *
+ * This component manages conversation state, user input, and streaming AI responses. It prompts the user to
+ * select a mode (movie or anime) before initializing the chat with default system and assistant messages,
+ * and it updates the conversation in real-time as responses are streamed. The component also provides auto-scrolling
+ * to ensure the latest messages are visible.
+ */
 function App() {
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
