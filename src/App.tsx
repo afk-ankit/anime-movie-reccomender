@@ -205,6 +205,7 @@ function App() {
                   </p>
                 )}
                 <div ref={messagesEndRef} />
+                <h1>This is to check coderabbit</h1>
               </div>
             </ScrollArea>
           </>
