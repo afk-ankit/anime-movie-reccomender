@@ -17,6 +17,7 @@ function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [preference, setPreference] = useState<"movie" | "anime" | null>(null);
+  const name='ankit'
 
   // Add refs for scroll management
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -145,6 +146,7 @@ function App() {
           <>
             <h1 className="text-xl text-center">What's your mode today 🤩 ?</h1>
             <div className="flex gap-2 mx-auto w-fit">
+              {ankit.map(item=><h1>{item.value}</h1>)}
               <Badge
                 variant={"outline"}
                 className="cursor-pointer text-[16px]"
